@@ -1,6 +1,14 @@
 const nextConfig = {
   eslint: {
-    ignoreDuringBuilds: true, // Ignores ESLint errors during `next build`
+    ignoreDuringBuilds: true, 
+  },
+   images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+    ],
   },
 };
 

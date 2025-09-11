@@ -24,3 +24,14 @@ model Contact {
   message String
   createdAt DateTime @db.Date @default(now())
 }
+model ContactForm {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String
+  howCanWeHelp  String
+  description   String
+  subscription  Boolean
+  howSubscribe  String
+  device        String?
+  createdAt     DateTime @default(now()) @db.Date
+}
