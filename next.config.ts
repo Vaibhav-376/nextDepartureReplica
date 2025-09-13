@@ -1,14 +1,10 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
-    ignoreDuringBuilds: true, 
+    ignoreDuringBuilds: true,
   },
-   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "placehold.co",
-      },
-    ],
+  images: {
+    domains: ["upload.wikimedia.org", "plus.unsplash.com", "placehold.co","res.cloudinary.com"],
   },
 };
 

@@ -1,0 +1,158 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setBlogs, deleteBlog as removeBlog } from "../../../store/blogSlice";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+
+const AllBlogs = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const blogs = useSelector((state) => state.blogs.blogs);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [search, setSearch] = useState("");
+  const limit = 6;
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/blog?page=${page}&limit=${limit}`);
+        if (!res.ok) throw new Error("Failed to fetch blogs");
+        const data = await res.json();
+        dispatch(setBlogs(data.blogs));
+        setTotal(data.total);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlogs();
+  }, [page, dispatch]);
+
+  const handleDeleteBlog = async (id) => {
+    if (!confirm("Are you sure you want to delete this blog?")) return;
+    try {
+      const res = await fetch(`/api/blog/by-id/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        dispatch(removeBlog(id));
+      } else {
+        const errorData = await res.json();
+        console.error("Delete failed:", errorData.message);
+      }
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+    }
+  };
+
+  const handleAddBlog = () => {
+    router.push("/admin/createBlog");
+  };
+
+  const filteredBlogs = blogs.filter((blog) =>
+    blog.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  if (loading) return <p className="text-gray-500">Loading blogs...</p>;
+  if (error) return <p className="text-red-500">Error: {error}</p>;
+
+  return (
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-6 flex-col md:flex-row gap-4">
+        <input
+          type="text"
+          placeholder="Search blogs..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full md:w-1/3 px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300"
+        />
+        <div className="flex justify-end">
+          <button onClick={handleAddBlog} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add Blogs</button>
+        </div>
+      </div>
+
+      {filteredBlogs.length === 0 ? (
+        <p className="text-gray-500">No blogs found</p>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredBlogs.map((blog) => (
+            <div
+              key={blog.id}
+              className="p-6 rounded-2xl shadow-lg bg-white border hover:shadow-2xl transition duration-300"
+            >
+              <div className="mb-4 rounded-xl overflow-hidden">
+                <Image
+                  src={blog.image?.[0] || "/fallback.jpg"}
+                  alt={blog.title}
+                  width={400}
+                  height={250}
+                  className="object-cover w-full h-48 transform hover:scale-105 transition duration-300"
+                />
+              </div>
+              <h2 className="text-xl font-semibold line-clamp-2">
+                {blog.title}
+              </h2>
+              <p className="text-gray-500 text-sm mt-2 line-clamp-3">
+                {blog.description}
+              </p>
+
+              <div className="flex flex-wrap gap-2 mt-4">
+                <button
+                  onClick={() => router.push(`/admin/allblogs/${blog.slug}`)}
+                  className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                >
+                  Read More
+                </button>
+                <button
+                  onClick={() => router.push(`/admin/edit/${blog.id}`)}
+                  className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDeleteBlog(blog.id)}
+                  className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+
+      {total > limit && (
+        <div className="flex justify-center space-x-2 mt-6">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((p) => p - 1)}
+            className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50"
+          >
+            Prev
+          </button>
+          <span className="px-4 py-2">
+            Page {page} of {Math.ceil(total / limit)}
+          </span>
+          <button
+            disabled={page === Math.ceil(total / limit)}
+            onClick={() => setPage((p) => p + 1)}
+            className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AllBlogs;

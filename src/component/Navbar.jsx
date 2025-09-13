@@ -44,7 +44,7 @@ const Navbar = () => {
         
         <ul className="hidden md:flex space-x-8 text-sm font-medium">
           <li><Link href="/story">Our Story</Link></li>
-          <li><Link href="#">Travel Blog</Link></li>
+          <li><Link href="/travelBlog">Travel Blog</Link></li>
           <li><Link href="/support">Support</Link></li>
         </ul>
 
@@ -94,7 +94,7 @@ const Navbar = () => {
         <div className="md:hidden bg-gray-700 px-6 pb-4 space-y-4">
           <ul className="flex flex-col space-y-2 text-sm font-medium">
             <li><Link href="/story" onClick={() => setMenuOpen(false)}>Our Story</Link></li>
-            <li><Link href="#" onClick={() => setMenuOpen(false)}>Travel Blog</Link></li>
+            <li><Link href="/travelBlog" onClick={() => setMenuOpen(false)}>Travel Blog</Link></li>
             <li><Link href="/support" onClick={() => setMenuOpen(false)}>Support</Link></li>
           </ul>
 
