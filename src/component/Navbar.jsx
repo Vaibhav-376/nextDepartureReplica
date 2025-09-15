@@ -85,6 +85,14 @@ const Navbar = () => {
               Support
             </Link>
           </li>
+          <li>
+            <Link
+              href="/subscribe"
+              className="hover:text-blue-400 transition-colors duration-200 py-2"
+            >
+              Subscribe
+            </Link>
+          </li>
         </ul>
 
         <div className="hidden md:flex space-x-4 items-center">
@@ -178,6 +186,15 @@ const Navbar = () => {
                   className="block py-2 hover:text-blue-400 transition-colors duration-200"
                 >
                   Support
+                </Link>
+              </li>
+                            <li>
+                <Link
+                  href="/subscribe"
+                  onClick={() => setMenuOpen(false)}
+                  className="block py-2 hover:text-blue-400 transition-colors duration-200"
+                >
+                  Subscribe
                 </Link>
               </li>
             </ul>
