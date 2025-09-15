@@ -17,8 +17,37 @@ const AllBlogs = () => {
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
   const limit = 6;
+  const [authChecked, setAuthChecked] = useState(false);
+
 
   useEffect(() => {
+    const checkAdminAccess = async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          const data = await res.json();
+          if (!data.user || !data.user.isAdmin) {
+            router.push("/auth/login?message=Admin access required");
+            return;
+          }
+        } else {
+          router.push("/auth/login?message=Please login first");
+          return;
+        }
+      } catch (err) {
+        console.error("Admin check failed:", err);
+        router.push("/auth/login?message=Authentication error");
+        return;
+      }
+      setAuthChecked(true);
+    };
+
+    checkAdminAccess();
+  }, [router]);
+
+  useEffect(() => {
+    if (!authChecked) return;
+
     const fetchBlogs = async () => {
       try {
         setLoading(true);
@@ -34,7 +63,7 @@ const AllBlogs = () => {
       }
     };
     fetchBlogs();
-  }, [page, dispatch]);
+  }, [page, dispatch, authChecked]);
 
   const handleDeleteBlog = async (id) => {
     if (!confirm("Are you sure you want to delete this blog?")) return;
@@ -60,6 +89,15 @@ const AllBlogs = () => {
   const filteredBlogs = blogs.filter((blog) =>
     blog.title.toLowerCase().includes(search.toLowerCase())
   );
+
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500">Verifying admin access...</p>
+      </div>
+    );
+  }
 
   if (loading) return <p className="text-gray-500">Loading blogs...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
@@ -128,7 +166,6 @@ const AllBlogs = () => {
           ))}
         </div>
       )}
-
 
       {total > limit && (
         <div className="flex justify-center space-x-2 mt-6">

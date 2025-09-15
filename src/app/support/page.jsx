@@ -53,7 +53,6 @@ const Support = () => {
     ]
 
 
-
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -61,7 +60,7 @@ const Support = () => {
         description: "",
         subscription: "",
         howSubscribe: "",
-        device: "",
+        deviceType: "",
     });
 
     const [status, setStatus] = useState("");
@@ -86,6 +85,7 @@ const Support = () => {
             });
 
             const data = await res.json();
+            console.log("Support data", data);
             if (res.ok) {
                 setStatus("✅ Submitted successfully!");
             } else {
@@ -271,15 +271,15 @@ const Support = () => {
                                 <label className="flex items-center gap-2">
                                     <input type="radio"
                                         name="subscription"
-                                        value="yes"
-                                        checked={formData.subscription === "yes"}
+                                        value="true"
+                                        checked={formData.subscription === "true"}
                                         onChange={handleChange} />
                                     Yes
                                 </label>
                                 <label className="flex items-center gap-2">
                                     <input type="radio" name="subscription"
-                                        value="yes"
-                                        checked={formData.subscription === "yes"}
+                                        value="false"
+                                        checked={formData.subscription === "false"}
                                         onChange={handleChange} />
                                     No
                                 </label>
@@ -328,12 +328,13 @@ const Support = () => {
                             </label>
                             <input
                                 type="text"
-                                placeholder="iPhone 13, S22+, etc"
+                                name="deviceType" 
                                 value={formData.deviceType}
                                 onChange={handleChange}
-                                name="deviceType"
+                                placeholder="iPhone 13, S22+, etc"
                                 className="w-full border rounded-md px-3 py-2 focus:ring focus:ring-blue-200"
                             />
+
                         </div>
 
                         <button

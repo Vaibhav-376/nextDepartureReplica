@@ -5,16 +5,7 @@ import prisma from "../../../../prisma/client";
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const {
-            name,
-            email,
-            howCanWeHelp,
-            description,
-            subscription,
-            howSubscribe,
-            device,
-        } = body;
-
+        let { name, email, howCanWeHelp, description, subscription, howSubscribe, deviceType } = body;
 
         if (!name || !email || !howCanWeHelp || !description) {
             return NextResponse.json(
@@ -23,7 +14,10 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const detail = prisma.contactForm.create({
+        if (subscription === "true") { subscription = true; }
+        else subscription = false;
+
+        const detail = await prisma.contactForm.create({
             data: {
                 name,
                 email,
@@ -31,9 +25,11 @@ export async function POST(req: NextRequest) {
                 description,
                 subscription,
                 howSubscribe,
-                device
-            }
-        })
+                deviceType,
+            },
+        });
+
+        console.log("Contact form data from api:", body);
 
         return NextResponse.json(
             {
@@ -46,8 +42,9 @@ export async function POST(req: NextRequest) {
                     description,
                     subscription,
                     howSubscribe,
-                    device,
+                    deviceType,
                 },
+                detail,
             },
             { status: 200 }
         );

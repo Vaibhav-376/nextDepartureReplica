@@ -1,8 +1,46 @@
 "use client";
 
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const Admin = () => {
+
+    const router = useRouter()
+    const [authChecked, setAuthChecked] = useState(false);
+
+
+    useEffect(() => {
+        const checkAdminAccess = async () => {
+            try {
+                const res = await fetch("/api/auth/me");
+                if (res.ok) {
+                    const data = await res.json();
+                    if (!data.user || !data.user.isAdmin) {
+                        router.push("/auth/login?message=Admin access required");
+                        return;
+                    }
+                } else {
+                    router.push("/auth/login?message=Please login first");
+                    return;
+                }
+            } catch (err) {
+                console.error("Admin check failed:", err);
+                router.push("/auth/login?message=Authentication error");
+                return;
+            }
+            setAuthChecked(true);
+        };
+
+        checkAdminAccess();
+    }, [router]);
+
+    useEffect(() => {
+        if (!authChecked) return;
+
+    }, [authChecked]);
+
+
+
     const [error, setError] = useState(null);
     const [formdata, setFormdata] = useState({
         title: "",
@@ -71,6 +109,15 @@ const Admin = () => {
             setError("Something went wrong");
         }
     };
+
+
+    if (!authChecked) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <p className="text-gray-500">Verifying admin access...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">

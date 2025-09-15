@@ -27,42 +27,45 @@ const Blog = () => {
   }, [dispatch]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <h1 className="text-4xl font-extrabold text-center mb-10">
-        ✈️ Travel <span className="text-blue-600">Blogs</span>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-8 sm:mb-12">
+        Travel <span className="text-blue-600">Blogs</span>
       </h1>
 
       {blogs.length === 0 ? (
-        <p className="text-gray-500 text-center text-lg">No blogs found</p>
+        <p className="text-gray-500 text-center text-base sm:text-lg">
+          No blogs found
+        </p>
       ) : (
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {blogs.map((blog) => (
             <motion.div
-              key={blog.id}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              className="p-5 rounded-2xl shadow-lg bg-white border border-gray-200 flex flex-col transition-all hover:shadow-2xl"
+              key={blog.id}z
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              className="p-4 sm:p-5 rounded-2xl shadow-md bg-white border border-gray-200 flex flex-col transition-all hover:shadow-xl"
             >
-              <div className="overflow-hidden rounded-xl">
+              <div className="overflow-hidden rounded-xl aspect-[16/10]">
                 <Image
                   src={blog.image[0]}
                   alt={blog.title}
                   width={500}
                   height={300}
-                  className="rounded-xl object-cover hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover rounded-xl hover:scale-110 transition-transform duration-500"
                 />
               </div>
 
-              <h2 className="text-xl font-bold mt-4 text-gray-800 line-clamp-2">
+              <h2 className="text-lg sm:text-xl font-bold mt-3 sm:mt-4 text-gray-800 line-clamp-2">
                 {blog.title}
               </h2>
-              <p className="text-gray-600 mt-2 text-sm line-clamp-3">
+
+              <p className="text-gray-600 mt-2 text-sm sm:text-base line-clamp-3">
                 {blog.description}
               </p>
 
               <button
                 onClick={() => router.push(`/travelBlog/${blog.slug}`)}
-                className="mt-4 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                className="mt-4 sm:mt-5 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all text-sm sm:text-base"
               >
                 Read More →
               </button>

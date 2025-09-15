@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Signup = () => {
@@ -9,6 +10,7 @@ const Signup = () => {
         password: "",
     });
     const [error, setError] = useState(null);
+    const router = useRouter()
 
     const handleChange = (e) => {
         setFormdata({ ...formdata, [e.target.name]: e.target.value });
@@ -34,18 +36,16 @@ const Signup = () => {
                 setError(data.error || "Something went wrong");
             } else {
                 alert("Signup successful!");
+                router.push("/auth/login");
             }
         } catch (err) {
             setError("Failed to connect to server");
         }
-
-        if (res.ok) {
-            setFormdata({
-                name: "",
-                email: "",
-                password: "",
-            })
-        }
+        setFormdata({
+            name: "",
+            email: "",
+            password: "",
+        });
     };
 
     return (
