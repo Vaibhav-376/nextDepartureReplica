@@ -108,7 +108,7 @@ export default function Home() {
             <h1 className="text-3xl sm:text-4xl font-bold leading-snug">
               Never Pay Full Price for a Flight Again
             </h1>
-            <p className="mt-4 text-base sm:text-lg font-medium">
+            <p className="mt-4 text-base sm:text-lg font-medium text-justify">
               We keep eye out for the best flight deals and mistake fares departing from Canadian cities.
             </p>
             <button className="mt-6 px-6 py-3 bg-orange-400 hover:bg-orange-500 text-black font-semibold rounded-lg shadow-lg transition">
@@ -135,7 +135,7 @@ export default function Home() {
                 className="mb-8 mx-auto" />
 
               <h1 className="font-bold text-xl text-[#4dd1fe]">{step.title}</h1>
-              <p>{step.desc}</p>
+              <p className="text-justify">{step.desc}</p>
             </div>
           ))}
         </div>
@@ -219,7 +219,7 @@ export default function Home() {
                 <span>{openIndex === i ? "▲" : "▶"}</span>
               </button>
               {openIndex === i && (
-                <p className="mt-2 text-md text-gray-600">
+                <p className="mt-2 text-md text-gray-600 text-justify">
                   This is the answer for "{q.ans}"
                 </p>
               )}

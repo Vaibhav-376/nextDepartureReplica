@@ -63,11 +63,11 @@ const BlogBySlug = () => {
         />
       </div>
 
-      <p className="text-lg text-gray-600 leading-relaxed mb-8 text-center">
+      <p className="text-lg text-gray-600 leading-relaxed mb-8 text-justify">
         {blog.description}
       </p>
 
-      <div className="prose lg:prose-lg max-w-none prose-headings:text-gray-800 prose-p:text-gray-700 prose-a:text-blue-600 prose-img:rounded-xl">
+      <div className="prose lg:prose-lg max-w-none prose-headings:text-gray-800 prose-p:text-gray-700 prose-a:text-blue-600 prose-img:rounded-xl text-justify">
         {blog.content}
       </div>
     </div>

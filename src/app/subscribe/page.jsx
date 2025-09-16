@@ -164,7 +164,7 @@ const Subscribe = () => {
               <h3 className="text-lg font-semibold text-gray-800">
                 {benefit.title}
               </h3>
-              <p className="mt-2 text-gray-600 text-sm">{benefit.desc}</p>
+              <p className="mt-2 text-gray-600 text-sm text-justify">{benefit.desc}</p>
             </div>
           ))}
         </div>
