@@ -3,20 +3,23 @@ import prisma from "../../../../../prisma/client";
 
 
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
     try {
-        await prisma.user.delete({ where: { id: params.id } });
+        const { id } = await context.params;
+        await prisma.user.delete({ where: { id } });
         return NextResponse.json({ message: "User deleted successfully" });
     } catch (error) {
         return NextResponse.json({ error: "Failed to delete user" }, { status: 500 });
     }
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, context: { params: Promise<{ id: string }> }) {
     const { isAdmin } = await request.json();
+
     try {
+        const { id } = await context.params;
         const updatedUser = await prisma.user.update({
-            where: { id: params.id },
+            where: { id },
             data: { isAdmin },
         });
         return NextResponse.json({ user: updatedUser });

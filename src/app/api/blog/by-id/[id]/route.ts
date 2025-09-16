@@ -19,7 +19,6 @@ export async function GET(
   return NextResponse.json({ blog });
 }
 
-// UPDATE blog by ID
 export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
