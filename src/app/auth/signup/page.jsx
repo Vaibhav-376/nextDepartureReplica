@@ -29,9 +29,7 @@ const Signup = () => {
                 body: JSON.stringify(formdata),
             });
 
-            console.log("res:", res);
             const data = await res.json();
-            console.log("data:", data);
             if (!res.ok) {
                 setError(data.error || "Something went wrong");
             } else {

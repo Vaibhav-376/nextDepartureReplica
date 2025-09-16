@@ -24,10 +24,8 @@ export function middleware(req) {
       }
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("Decoded token in middleware:", decoded);
 
       if (!decoded || !decoded.isAdmin) {
-        console.log("User is not admin:", decoded);
         return NextResponse.redirect(
           new URL("/auth/login?message=Admin access required", req.url)
         );

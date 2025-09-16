@@ -85,7 +85,6 @@ const Support = () => {
             });
 
             const data = await res.json();
-            console.log("Support data", data);
             if (res.ok) {
                 setStatus("✅ Submitted successfully!");
             } else {

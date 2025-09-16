@@ -19,7 +19,6 @@ const AllBlogs = () => {
   const limit = 6;
   const [authChecked, setAuthChecked] = useState(false);
 
-
   useEffect(() => {
     const checkAdminAccess = async () => {
       try {
@@ -90,7 +89,6 @@ const AllBlogs = () => {
     blog.title.toLowerCase().includes(search.toLowerCase())
   );
 
-
   if (!authChecked) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -99,95 +97,134 @@ const AllBlogs = () => {
     );
   }
 
-  if (loading) return <p className="text-gray-500">Loading blogs...</p>;
-  if (error) return <p className="text-red-500">Error: {error}</p>;
-
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-6 flex-col md:flex-row gap-4">
-        <input
-          type="text"
-          placeholder="Search blogs..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full md:w-1/3 px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300"
-        />
-        <div className="flex justify-end">
-          <button onClick={handleAddBlog} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add Blogs</button>
-        </div>
+    <div className="min-h-screen flex bg-gray-100">
+      {/* Sidebar */}
+      <div className="w-64 bg-gray-800 text-white p-5">
+        <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
+        <ul className="space-y-4">
+          <li onClick={() => router.push("/admin")} className="hover:text-blue-400 cursor-pointer">Dashboard</li>
+          <li onClick={() => router.push("/admin/users")} className="hover:text-blue-400 cursor-pointer">Users</li>
+          <li onClick={() => router.push("/admin/allblogs")} className="hover:text-blue-400 cursor-pointer">Blogs</li>
+        </ul>
       </div>
 
-      {filteredBlogs.length === 0 ? (
-        <p className="text-gray-500">No blogs found</p>
-      ) : (
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredBlogs.map((blog) => (
-            <div
-              key={blog.id}
-              className="p-6 rounded-2xl shadow-lg bg-white border hover:shadow-2xl transition duration-300"
+      {/* Main Content */}
+      <div className="flex-1 p-10">
+        <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl font-bold">
+              Manage <span className="text-blue-600">Blogs</span>
+            </h1>
+            <p className="mt-2 text-gray-600">
+              Here you can search, edit, and delete blogs.
+            </p>
+          </div>
+          <div>
+            <button
+              onClick={() => router.push("/")}
+              className="bg-[#4d37f0] text-white px-4 py-2 rounded mr-2"
             >
-              <div className="mb-4 rounded-xl overflow-hidden">
-                <Image
-                  src={blog.image?.[0] || "/fallback.jpg"}
-                  alt={blog.title}
-                  width={400}
-                  height={250}
-                  className="object-cover w-full h-48 transform hover:scale-105 transition duration-300"
-                />
-              </div>
-              <h2 className="text-xl font-semibold line-clamp-2">
-                {blog.title}
-              </h2>
-              <p className="text-gray-500 text-sm mt-2 line-clamp-3">
-                {blog.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2 mt-4">
-                <button
-                  onClick={() => router.push(`/admin/allblogs/${blog.slug}`)}
-                  className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
-                >
-                  Read More
-                </button>
-                <button
-                  onClick={() => router.push(`/admin/edit/${blog.id}`)}
-                  className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteBlog(blog.id)}
-                  className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
+              Visit Site
+            </button>
+            <button
+              onClick={handleAddBlog}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Add Blog
+            </button>
+          </div>
         </div>
-      )}
 
-      {total > limit && (
-        <div className="flex justify-center space-x-2 mt-6">
-          <button
-            disabled={page === 1}
-            onClick={() => setPage((p) => p - 1)}
-            className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50"
-          >
-            Prev
-          </button>
-          <span className="px-4 py-2">
-            Page {page} of {Math.ceil(total / limit)}
-          </span>
-          <button
-            disabled={page === Math.ceil(total / limit)}
-            onClick={() => setPage((p) => p + 1)}
-            className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50"
-          >
-            Next
-          </button>
+        {/* Search Bar */}
+        <div className="mb-6">
+          <input
+            type="text"
+            placeholder="Search blogs..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full md:w-1/3 px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300"
+          />
         </div>
-      )}
+
+        {/* Blogs Section */}
+        {loading ? (
+          <p className="text-gray-500">Loading blogs...</p>
+        ) : error ? (
+          <p className="text-red-500">Error: {error}</p>
+        ) : filteredBlogs.length === 0 ? (
+          <p className="text-gray-500">No blogs found</p>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {filteredBlogs.map((blog) => (
+              <div
+                key={blog.id}
+                className="p-6 rounded-2xl shadow-lg bg-white border hover:shadow-2xl transition duration-300"
+              >
+                <div className="mb-4 rounded-xl overflow-hidden">
+                  <Image
+                    src={blog.image?.[0] || "/fallback.jpg"}
+                    alt={blog.title}
+                    width={400}
+                    height={250}
+                    className="object-cover w-full h-48 transform hover:scale-105 transition duration-300"
+                  />
+                </div>
+                <h2 className="text-xl font-semibold line-clamp-2">
+                  {blog.title}
+                </h2>
+                <p className="text-gray-500 text-sm mt-2 line-clamp-3">
+                  {blog.description}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <button
+                    onClick={() => router.push(`/admin/allblogs/${blog.slug}`)}
+                    className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                  >
+                    Read More
+                  </button>
+                  <button
+                    onClick={() => router.push(`/admin/edit/${blog.id}`)}
+                    className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteBlog(blog.id)}
+                    className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {total > limit && (
+          <div className="flex justify-center space-x-2 mt-6">
+            <button
+              disabled={page === 1}
+              onClick={() => setPage((p) => p - 1)}
+              className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50"
+            >
+              Prev
+            </button>
+            <span className="px-4 py-2">
+              Page {page} of {Math.ceil(total / limit)}
+            </span>
+            <button
+              disabled={page === Math.ceil(total / limit)}
+              onClick={() => setPage((p) => p + 1)}
+              className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -29,8 +29,6 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        console.log("Contact form data from api:", body);
-
         return NextResponse.json(
             {
                 success: true,

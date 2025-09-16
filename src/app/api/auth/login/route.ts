@@ -18,7 +18,6 @@ export async function POST(request: NextRequest) {
       where: { email },
     });
     
-    console.log("userrr", user);
     
     if (!user) {
       return NextResponse.json(

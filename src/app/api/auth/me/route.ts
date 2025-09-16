@@ -5,7 +5,6 @@ import prisma from "../../../../../prisma/client";
 export async function GET(req: NextRequest) {
   try {
     const token = req.cookies.get("token")?.value;
-    console.log("apiMeToken", token);
 
     if (!token || !process.env.JWT_SECRET) {
       return NextResponse.json({ user: null }, { status: 401 });
