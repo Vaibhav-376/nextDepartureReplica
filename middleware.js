@@ -1,10 +1,20 @@
-// middleware.ts
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import { jwtVerify } from "jose";
 
-export function middleware(req) {
+const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+async function verifyJWT(token) {
+  try {
+    const { payload } = await jwtVerify(token, secret);
+    return payload;
+  } catch (err) {
+    console.error("JWT verification failed:", err);
+    return null;
+  }
+}
+
+export async function middleware(req) {
   const { pathname } = req.nextUrl;
-
 
   if (pathname.startsWith("/admin")) {
     const token = req.cookies.get("token")?.value;
@@ -15,29 +25,22 @@ export function middleware(req) {
       );
     }
 
-    try {
-      if (!process.env.JWT_SECRET) {
-        console.error("JWT_SECRET is not defined");
-        return NextResponse.redirect(
-          new URL("/auth/login?message=Configuration error", req.url)
-        );
-      }
-
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      if (!decoded || !decoded.isAdmin) {
-        return NextResponse.redirect(
-          new URL("/auth/login?message=Admin access required", req.url)
-        );
-      }
-
-      return NextResponse.next();
-    } catch (err) {
-      console.error("JWT verification failed:", err);
+    if (!process.env.JWT_SECRET) {
+      console.error("JWT_SECRET is not defined");
       return NextResponse.redirect(
-        new URL("/auth/login?message=Session expired", req.url)
+        new URL("/auth/login?message=Configuration error", req.url)
       );
     }
+
+    const decoded = await verifyJWT(token);
+
+    if (!decoded || !decoded.isAdmin) {
+      return NextResponse.redirect(
+        new URL("/auth/login?message=Admin access required", req.url)
+      );
+    }
+
+    return NextResponse.next();
   }
 
   return NextResponse.next();
