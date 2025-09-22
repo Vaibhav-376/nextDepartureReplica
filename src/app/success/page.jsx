@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import { CheckCircle2, Calendar, CreditCard, User, Mail, Package } from "lucide-react";
+import Link from "next/link";
 
 export default function SuccessPage() {
   const [subscription, setSubscription] = useState(null);
@@ -23,11 +24,8 @@ export default function SuccessPage() {
         const res = await fetch(`/api/stripe/success?session_id=${session_id}`);
         const data = await res.json();
 
-        if (res.ok) {
-          setSubscription(data);
-        } else {
-          setError(data.error || "Failed to fetch subscription");
-        }
+        if (res.ok) setSubscription(data);
+        else setError(data.error || "Failed to fetch subscription");
       } catch (err) {
         setError(err.message || "Unexpected error");
       } finally {
@@ -38,15 +36,17 @@ export default function SuccessPage() {
     fetchSubscription();
   }, []);
 
-  if (loading) {
+  const formatCurrency = (amount, currency) =>
+    new Intl.NumberFormat("en-US", { style: "currency", currency }).format(amount / 100);
+
+  if (loading)
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
     );
-  }
 
-  if (error) {
+  if (error)
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -57,16 +57,9 @@ export default function SuccessPage() {
           </div>
           <h1 className="mt-4 text-xl font-semibold text-center text-red-600">Error</h1>
           <p className="mt-2 text-gray-600 text-center">{error}</p>
-          <button 
-            onClick={() => window.location.href = '/subscribe'}
-            className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
-          >
-            Go Back to Subscribe
-          </button>
         </div>
       </div>
     );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -85,10 +78,10 @@ export default function SuccessPage() {
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
             <h2 className="text-xl font-semibold text-white">Subscription Details</h2>
           </div>
-          
+
           <div className="p-6">
             <div className="grid md:grid-cols-2 gap-6">
-              {/* Customer Information */}
+              {/* Customer Info */}
               <div className="space-y-4">
                 <h3 className="text-lg font-medium text-gray-900 flex items-center">
                   <User className="w-5 h-5 mr-2 text-blue-600" />
@@ -103,10 +96,14 @@ export default function SuccessPage() {
                     <Mail className="w-4 h-4 mr-2 text-gray-500" />
                     <span className="text-gray-900">{subscription.customerEmail}</span>
                   </div>
+                  <div className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+                    <span className="text-gray-900">Next Billing: {subscription.nextBilling}</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Plan Information */}
+              {/* Plan Info */}
               <div className="space-y-4">
                 <h3 className="text-lg font-medium text-gray-900 flex items-center">
                   <Package className="w-5 h-5 mr-2 text-blue-600" />
@@ -119,17 +116,13 @@ export default function SuccessPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="font-medium text-gray-700">Status:</span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      subscription.status === 'ACTIVE' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${subscription.status === "ACTIVE"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-yellow-100 text-yellow-800"
+                        }`}
+                    >
                       {subscription.status}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-700">Next Billing:</span>
-                    <span className="text-gray-900 flex items-center">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {subscription.nextBilling}
                     </span>
                   </div>
                 </div>
@@ -141,72 +134,60 @@ export default function SuccessPage() {
         {/* Payment History */}
         {subscription.payments && subscription.payments.length > 0 && (
           <div className="mt-8 bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-              <h2 className="text-xl font-semibold text-white flex items-center">
-                <CreditCard className="w-5 h-5 mr-2" />
-                Payment History
-              </h2>
+            <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4 flex items-center">
+              <CreditCard className="w-5 h-5 mr-2 text-white" />
+              <h2 className="text-xl font-semibold text-white">Payment History</h2>
             </div>
-            
-            <div className="p-6">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Amount
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Date
-                      </th>
+
+            <div className="p-6 overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {subscription.payments.map((payment, idx) => (
+                    <tr key={payment.id || idx} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {formatCurrency(payment.amount, payment.currency)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${payment.status === "SUCCEEDED"
+                              ? "bg-green-100 text-green-800"
+                              : payment.status === "FAILED"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-yellow-100 text-yellow-800"
+                            }`}
+                        >
+                          {payment.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {payment.date}
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {subscription.payments.map((payment, index) => (
-                      <tr key={payment.id || index} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          ${payment.amount} {payment.currency.toUpperCase()}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            payment.status === 'SUCCEEDED' 
-                              ? 'bg-green-100 text-green-800'
-                              : payment.status === 'FAILED'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}>
-                            {payment.status}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {payment.date}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
 
-        {/* Action Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <button 
-            onClick={() => window.location.href = '/dashboard'}
+          <Link href = "/"><button
             className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
           >
             Go to Dashboard
-          </button>
-          <button 
-            onClick={() => window.location.href = '/'}
+          </button></Link>
+          <Link href={"/"}><button
             className="px-6 py-3 bg-gray-600 text-white font-medium rounded-md hover:bg-gray-700 transition-colors"
           >
             Back to Home
-          </button>
+          </button></Link>
         </div>
       </div>
     </div>

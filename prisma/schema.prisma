@@ -94,6 +94,7 @@ enum SubscriptionStatus {
   PAST_DUE
   UNPAID
   TRIALING
+  EXPIRED
 }
 
 enum SubscriptionPlan {
