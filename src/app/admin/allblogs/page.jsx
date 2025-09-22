@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setBlogs, deleteBlog as removeBlog } from "../../../store/blogSlice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const AllBlogs = () => {
   const router = useRouter();
@@ -99,17 +100,16 @@ const AllBlogs = () => {
 
   return (
     <div className="min-h-screen flex bg-gray-100">
-      {/* Sidebar */}
+
       <div className="w-64 bg-gray-800 text-white p-5">
         <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
         <ul className="space-y-4">
-          <li onClick={() => router.push("/admin")} className="hover:text-blue-400 cursor-pointer">Dashboard</li>
-          <li onClick={() => router.push("/admin/users")} className="hover:text-blue-400 cursor-pointer">Users</li>
-          <li onClick={() => router.push("/admin/allblogs")} className="hover:text-blue-400 cursor-pointer">Blogs</li>
+          <Link href={"/admin"} className="block"><li className="hover:text-blue-400 cursor-pointer">Dashboard</li></Link>
+          <Link href={"/admin/users"} className="block"><li className="hover:text-blue-400 cursor-pointer">Users</li></Link>
+          <Link href={"/admin/allblogs"} className="block"><li className="hover:text-blue-400 cursor-pointer">Blogs</li></Link>
         </ul>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 p-10">
         <div className="flex justify-between items-center flex-col md:flex-row gap-4 mb-8">
           <div>
@@ -136,7 +136,6 @@ const AllBlogs = () => {
           </div>
         </div>
 
-        {/* Search Bar */}
         <div className="mb-6">
           <input
             type="text"
@@ -147,7 +146,7 @@ const AllBlogs = () => {
           />
         </div>
 
-        {/* Blogs Section */}
+
         {loading ? (
           <p className="text-gray-500">Loading blogs...</p>
         ) : error ? (
@@ -202,7 +201,6 @@ const AllBlogs = () => {
           </div>
         )}
 
-        {/* Pagination */}
         {total > limit && (
           <div className="flex justify-center space-x-2 mt-6">
             <button

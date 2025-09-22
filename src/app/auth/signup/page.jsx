@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Signup = () => {
     const [formdata, setFormdata] = useState({
@@ -10,18 +11,40 @@ const Signup = () => {
         password: "",
     });
     const [error, setError] = useState(null);
-    const router = useRouter()
+    const [passwordError, setPasswordError] = useState(null);
+    const router = useRouter();
 
     const handleChange = (e) => {
-        setFormdata({ ...formdata, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormdata({ ...formdata, [name]: value });
+
+        if (name === "password") {
+            validatePassword(value);
+        }
+    };
+
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+        if (!regex.test(password)) {
+            setPasswordError(
+                "Password must be at least 8 characters, include one uppercase letter and one special character."
+            );
+        } else {
+            setPasswordError(null);
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
 
+        if (passwordError) {
+            setError(passwordError);
+            return;
+        }
+
         try {
-            const res = await fetch("http://localhost:3000/api/auth/register", {
+            const res = await fetch("/api/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -31,7 +54,7 @@ const Signup = () => {
 
             const data = await res.json();
             if (!res.ok) {
-                setError(data.error || "Something went wrong");
+                setError(data.message || "Something went wrong");
             } else {
                 alert("Signup successful!");
                 router.push("/auth/login");
@@ -39,6 +62,7 @@ const Signup = () => {
         } catch (err) {
             setError("Failed to connect to server");
         }
+
         setFormdata({
             name: "",
             email: "",
@@ -47,7 +71,7 @@ const Signup = () => {
     };
 
     return (
-        <div className="min-h-screen flex justify-center items-center ">
+        <div className="min-h-screen flex justify-center items-center bg-gray-100">
             <div className="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8">
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
                     Create an Account
@@ -97,6 +121,9 @@ const Signup = () => {
                             className="mt-1 w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
                             required
                         />
+                        {passwordError && (
+                            <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+                        )}
                     </div>
 
                     {error && (
@@ -113,9 +140,9 @@ const Signup = () => {
 
                 <p className="text-sm text-gray-600 text-center mt-6">
                     Already have an account?{" "}
-                    <a href="/login" className="text-indigo-600 font-medium hover:underline">
+                    <Link href="/login" className="text-indigo-600 font-medium hover:underline">
                         Login
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>

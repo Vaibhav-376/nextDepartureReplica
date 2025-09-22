@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../component/Navbar";
+import { AuthProvider } from "../lib/AuthContext";
+
 import Footer from "../component/Footer";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next"
@@ -30,11 +32,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <Analytics/>
+          <AuthProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </AuthProvider>
+          <Analytics />
         </Providers>
+
       </body>
     </html>
   );

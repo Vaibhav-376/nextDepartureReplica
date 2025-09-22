@@ -53,7 +53,6 @@ export async function POST(req: NextRequest) {
       });
       await prisma.user.update({ where: { id }, data: { stripeCustomerId: customer.id } });
       customerId = customer.id;
-      console.log(`✅ Created new Stripe customer for user ${id}: ${customerId}`);
     }
 
     const planKey = planType.toLowerCase() as keyof typeof STRIPE_CONFIG.plans;

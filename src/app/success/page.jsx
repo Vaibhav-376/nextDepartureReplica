@@ -64,7 +64,6 @@ export default function SuccessPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Success Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center w-16 h-16 mx-auto bg-green-100 rounded-full">
             <CheckCircle2 className="w-8 h-8 text-green-600" />
@@ -73,7 +72,6 @@ export default function SuccessPage() {
           <p className="mt-2 text-lg text-gray-600">Welcome to your premium membership</p>
         </div>
 
-        {/* Subscription Details */}
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
             <h2 className="text-xl font-semibold text-white">Subscription Details</h2>
@@ -81,7 +79,7 @@ export default function SuccessPage() {
 
           <div className="p-6">
             <div className="grid md:grid-cols-2 gap-6">
-              {/* Customer Info */}
+
               <div className="space-y-4">
                 <h3 className="text-lg font-medium text-gray-900 flex items-center">
                   <User className="w-5 h-5 mr-2 text-blue-600" />
@@ -103,7 +101,6 @@ export default function SuccessPage() {
                 </div>
               </div>
 
-              {/* Plan Info */}
               <div className="space-y-4">
                 <h3 className="text-lg font-medium text-gray-900 flex items-center">
                   <Package className="w-5 h-5 mr-2 text-blue-600" />

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -127,12 +128,12 @@ export default function LoginPage() {
 
         <p className="text-sm text-gray-600 text-center mt-6">
           Don’t have an account?{" "}
-          <a
+          <Link
             href="/auth/signup"
             className="text-indigo-600 font-medium hover:underline"
           >
             Sign Up
-          </a>
+          </Link>
         </p>
       </div>
     </div>

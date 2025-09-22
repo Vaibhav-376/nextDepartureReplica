@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { FiMenu, FiX, FiUser, FiLogOut, FiChevronDown } from "react-icons/fi";
+import { useAuth } from "../lib/AuthContext"; 
 
 const Navbar = () => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
+    const { user, setUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();

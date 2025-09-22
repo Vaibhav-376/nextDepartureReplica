@@ -1,5 +1,6 @@
 "use client";
 import { div } from 'framer-motion/client';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -45,9 +46,9 @@ const AdminDashboard = () => {
             <div className="w-64 bg-gray-800 text-white p-5">
                 <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
                 <ul className="space-y-4">
-                    <li onClick={()=>router.push('/admin')} className="hover:text-blue-400 cursor-pointer">Dashboard</li>
-                    <li onClick={()=>router.push('/admin/users')} className="hover:text-blue-400 cursor-pointer">Users</li>
-                    <li onClick={()=>router.push('/admin/allblogs')} className="hover:text-blue-400 cursor-pointer">Blogs</li>
+                    <Link href={"/admin"} className='block'><li className="hover:text-blue-400 cursor-pointer">Dashboard</li></Link>
+                    <Link href={"/admin/users"} className='block'><li className="hover:text-blue-400 cursor-pointer">Users</li></Link>
+                    <Link href={"/admin/allblogs"} className='block'><li className="hover:text-blue-400 cursor-pointer">Blogs</li></Link>
                 </ul>
             </div>
 
@@ -59,7 +60,7 @@ const AdminDashboard = () => {
                     <p className="mt-4 text-gray-600">Here you can manage users, blogs.</p>
                 </div>
                 <div>
-                    <button onClick={() => router.push('/')} className='bg-[#4d37f0] text-white px-4 py-2 rounded'>Visit Site</button>
+                    <Link href="/"><button className='bg-[#4d37f0] text-white px-4 py-2 rounded'>Visit Site</button></Link>
                 </div>
             </div>
         </div>

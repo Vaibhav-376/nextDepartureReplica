@@ -54,7 +54,6 @@ const handleSubscription = async (planType) => {
     setLoadingPlan(planType);
     setError(null);
 
-    // fetch the logged in user
     const res = await fetch("/api/auth/me");
     const { user } = await res.json();
 
@@ -62,7 +61,6 @@ const handleSubscription = async (planType) => {
       throw new Error("User not logged in");
     }
 
-    // call checkout API
     const response = await fetch("/api/stripe/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -90,7 +88,6 @@ const handleSubscription = async (planType) => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      {/* Header */}
       <div className="flex flex-col items-center text-center">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-gray-500 bg-clip-text text-transparent">
           Join 200,000+ Members & Save $400+ Per Flight
@@ -100,7 +97,7 @@ const handleSubscription = async (planType) => {
         </p>
       </div>
 
-      {/* Error */}
+ 
       {error && (
         <div className="mt-8 max-w-2xl mx-auto p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center">
           <p className="font-medium">Error:</p>
@@ -109,14 +106,13 @@ const handleSubscription = async (planType) => {
         </div>
       )}
 
-      {/* Plans */}
+
       <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
         {["essential", "premium"].map((planType) => (
           <PlanCard key={planType} planType={planType} loadingPlan={loadingPlan} handleSubscription={handleSubscription} />
         ))}
       </div>
 
-      {/* Benefits */}
       <div className="flex flex-col items-center mt-16 text-center">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Subscription Benefits</h2>
         <p className="text-gray-500 mb-10">Exclusive perks for members</p>
@@ -130,7 +126,7 @@ const handleSubscription = async (planType) => {
         </div>
       </div>
 
-      {/* Contact Form */}
+    
       <div className="flex items-center justify-center px-4 py-12 bg-gray-100 mt-20 rounded-2xl">
         <form onSubmit={handleSubmit} className="w-full max-w-2xl p-8 bg-white rounded-2xl shadow-lg flex flex-col space-y-6">
           <h2 className="text-3xl font-bold text-center text-[#4dd1fe]">Contact Us</h2>

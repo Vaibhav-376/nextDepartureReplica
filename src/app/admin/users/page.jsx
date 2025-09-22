@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUsers, deleteUser, updateUser } from "@/store/userSlice";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const AdminUsersPage = () => {
     const dispatch = useDispatch();
@@ -42,16 +43,10 @@ const AdminUsersPage = () => {
             <div className="w-64 bg-gray-800 text-white p-5">
                 <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
                 <ul className="space-y-4">
-                    <li onClick={() => router.push("/admin")} className="hover:text-blue-400 cursor-pointer">
-                        Dashboard
-                    </li>
-                    <li className="hover:text-blue-400 cursor-pointer">Users</li>
-                    <li
-                        onClick={() => router.push("/admin/allblogs")}
-                        className="hover:text-blue-400 cursor-pointer"
-                    >
-                        Blogs
-                    </li>
+                   <Link href="/admin" className="block"><li className="hover:text-blue-400 cursor-pointer">Dashboard</li></Link>
+
+                    <Link href={"/admin/users"} className="block"><li className="hover:text-blue-400 cursor-pointer">Users</li></Link>
+                    <Link href={"/admin/allblogs"} className="block"><li className="hover:text-blue-400 cursor-pointer">Blogs</li></Link>
                 </ul>
             </div>
 
@@ -63,12 +58,12 @@ const AdminUsersPage = () => {
                         </h1>
                         <p className="mt-2 text-gray-600">Add, update, or delete users from the system.</p>
                     </div>
-                    <button
-                        onClick={() => router.push("/")}
+                    <Link href = {"/"}><button
+                        
                         className="bg-[#4d37f0] text-white px-4 py-2 rounded"
                     >
                         Visit Site
-                    </button>
+                    </button></Link>
                 </div>
 
                 <div className="overflow-x-auto bg-white rounded shadow">
