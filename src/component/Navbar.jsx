@@ -9,6 +9,7 @@ import {
   FiUser,
   FiLogOut,
   FiChevronDown,
+  FiPhone,
 } from "react-icons/fi";
 import { useAuth } from "../lib/AuthContext"; 
 import Image from "next/image";
@@ -75,19 +76,15 @@ const Navbar = () => {
       { href: "/deals", label: "Deals" }   
     );
   } else if (user) {
-    navItems.push(
-      { href: "/subscribe", label: "Subscribe" }
-    );
+    navItems.push({ href: "/subscribe", label: "Subscribe" });
   } else {
-    navItems.push(
-      { href: "/subscribe", label: "Subscribe" }
-    );
+    navItems.push({ href: "/subscribe", label: "Subscribe" });
   }
-
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gray-900/70 backdrop-blur-md text-white shadow-lg">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 ">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6">
+        {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
           <Image
             src="/lastcalltrips.png"
@@ -99,7 +96,7 @@ const Navbar = () => {
           />
         </Link>
 
-   
+        {/* Desktop Nav */}
         <ul className="hidden md:flex space-x-10 text-base font-semibold">
           {navItems.map((item) => ( 
             <li key={item.href}>
@@ -114,7 +111,18 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="hidden md:flex space-x-5 items-center">
+        {/* Desktop Right Section */}
+        <div className="hidden md:flex items-center space-x-6">
+          {/* Toll Free Number */}
+          <a
+            href="tel:+18337471983"
+            className="flex items-center space-x-2 text-white hover:text-indigo-300 font-semibold"
+          >
+            <FiPhone className="text-lg" />
+            <span>+1 (833) 747-1983</span>
+          </a>
+
+          {/* Auth Buttons / Dropdown */}
           {!user ? (
             <>
               <Link
@@ -132,6 +140,7 @@ const Navbar = () => {
             </>
           ) : (
             <div className="relative" ref={dropdownRef}>
+              {/* Dropdown Button */}
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center space-x-2 px-5 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-all duration-200 font-medium border border-gray-600 hover:border-gray-500 min-w-[160px] text-base"
@@ -139,30 +148,33 @@ const Navbar = () => {
                 <FiUser className="text-lg" />
                 <span className="truncate max-w-[100px]">{user.name}</span>
                 <FiChevronDown
-                  className={`text-sm transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""
-                    }`}
+                  className={`text-sm transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
                 />
               </button>
 
+              {/* Dropdown Menu */}
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50 animate-fadeIn">
                   <div className="px-4 py-2 border-b border-gray-100">
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                      {user.name}
-                    </p>
-                    <p className="text-xs text-gray-500 truncate">
-                      {user.email}
-                    </p>
-                
-                    <span className={`mt-1 inline-block px-2 py-0.5 text-xs font-semibold rounded-full ${user.isSubscribed ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                        {user.isSubscribed ? ' Member' : ' User'}
+                    <p className="text-sm font-medium text-gray-900 truncate">{user.name}</p>
+                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                    <span
+                      className={`mt-1 inline-block px-2 py-0.5 text-xs font-semibold rounded-full ${
+                        user.isSubscribed ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {user.isSubscribed ? " Member" : " User"}
                     </span>
                   </div>
-               
+
                   {user.isSubscribed && (
-                    <Link href="/profile" onClick={() => setDropdownOpen(false)} className="flex items-center w-full px-4 py-3 text-left text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-200 group">
-                        <FiUser className="mr-3 text-lg group-hover:text-indigo-600" />
-                        <span className="font-medium">My Profile</span>
+                    <Link
+                      href="/profile"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center w-full px-4 py-3 text-left text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-200 group"
+                    >
+                      <FiUser className="mr-3 text-lg group-hover:text-indigo-600" />
+                      <span className="font-medium">My Profile</span>
                     </Link>
                   )}
 
@@ -179,6 +191,7 @@ const Navbar = () => {
           )}
         </div>
 
+        {/* Mobile Toggle */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden text-3xl focus:outline-none p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200"
@@ -187,11 +200,12 @@ const Navbar = () => {
         </button>
       </div>
 
+      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-gray-800 border-t border-gray-700 animate-slideDown">
           <div className="px-6 py-5 space-y-5">
             <ul className="flex flex-col space-y-4 text-base font-semibold">
-              {navItems.map((item) => ( 
+              {navItems.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -204,6 +218,18 @@ const Navbar = () => {
               ))}
             </ul>
 
+            {/* Toll Free Number in Mobile */}
+            <div className="border-t border-gray-700 pt-4">
+              <a
+                href="tel:+18337471983"
+                className="flex items-center space-x-2 text-white hover:text-indigo-300 font-semibold"
+              >
+                <FiPhone className="text-lg" />
+                <span>+1 (833) 747-1983</span>
+              </a>
+            </div>
+
+            {/* Auth Section */}
             <div className="border-t border-gray-700 pt-4">
               {!user ? (
                 <div className="flex flex-col space-y-3">
@@ -228,9 +254,7 @@ const Navbar = () => {
                     <p className="font-medium text-white truncate text-base">
                       Welcome, {user.name}
                     </p>
-                    <p className="text-xs text-gray-300 truncate">
-                      {user.email}
-                    </p>
+                    <p className="text-xs text-gray-300 truncate">{user.email}</p>
                   </div>
                   <button
                     onClick={() => {
