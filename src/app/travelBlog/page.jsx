@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlogs } from "../../store/blogSlice";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,8 @@ const Blog = () => {
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs.blogs);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
@@ -20,6 +22,8 @@ const Blog = () => {
         dispatch(setBlogs(data.blogs));
       } catch (error) {
         console.error("Failed to fetch blogs:", error);
+      } finally {
+        setLoading(false); 
       }
     };
 
@@ -32,7 +36,13 @@ const Blog = () => {
         Travel <span className="text-blue-600">Blogs</span>
       </h1>
 
-      {blogs.length === 0 ? (
+
+      {loading ? (
+        <p className="text-gray-500 text-center text-base sm:text-lg">
+          Loading blogs...
+        </p>
+      ) : blogs.length === 0 ? (
+
         <p className="text-gray-500 text-center text-base sm:text-lg">
           No blogs found
         </p>
@@ -40,7 +50,7 @@ const Blog = () => {
         <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {blogs.map((blog) => (
             <motion.div
-              key={blog.id}z
+              key={blog.id}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               className="p-4 sm:p-5 rounded-2xl shadow-md bg-white border border-gray-200 flex flex-col transition-all hover:shadow-xl"
