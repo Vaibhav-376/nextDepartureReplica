@@ -43,12 +43,11 @@ export async function GET(req: NextRequest) {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any;
     const subscriptionStatus = subscription.status.toUpperCase() as SubscriptionStatus;
 
-    // Human-readable next billing date
     const nextBilling = subscription.current_period_end
       ? formatDate(new Date(subscription.current_period_end * 1000))
       : "N/A";
 
-    // Upsert subscription in DB
+
     const dbSubscription = await prisma.subscription.upsert({
       where: { stripeSubscriptionId: subscription.id },
       update: {
@@ -114,7 +113,6 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // Customer info from session
     const customerName = session.customer_details?.name || session.metadata?.name || "N/A";
     const customerEmail = session.customer_details?.email || session.metadata?.email || "N/A";
 

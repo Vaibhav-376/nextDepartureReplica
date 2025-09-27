@@ -10,15 +10,15 @@ import {
   FiLogOut,
   FiChevronDown,
 } from "react-icons/fi";
-import { useAuth } from "../lib/AuthContext";
+import { useAuth } from "../lib/AuthContext"; 
 import Image from "next/image";
 
 const Navbar = () => {
-  const { user, setUser } = useAuth();
+  const { user, setUser } = useAuth(); 
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
-  const dropdownRef = useRef (null);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -26,7 +26,7 @@ const Navbar = () => {
         const res = await fetch("/api/auth/me");
         if (res.ok) {
           const data = await res.json();
-          setUser(data.user);
+          setUser(data.user); 
         }
       } catch (err) {
         console.error("Failed to fetch user:", err);
@@ -61,6 +61,30 @@ const Navbar = () => {
     }
   };
 
+  const baseNavItems = [
+    { href: "/story", label: "Our Story" },
+    { href: "/travelBlog", label: "Travel Blog" },
+    { href: "/support", label: "Support" },
+  ];
+
+  let navItems = [...baseNavItems];
+
+  if (user && user.isSubscribed) {
+    navItems.push(
+      { href: "/profile", label: "Profile" }, 
+      { href: "/deals", label: "Deals" }   
+    );
+  } else if (user) {
+    navItems.push(
+      { href: "/subscribe", label: "Subscribe" }
+    );
+  } else {
+    navItems.push(
+      { href: "/subscribe", label: "Subscribe" }
+    );
+  }
+
+
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gray-900/70 backdrop-blur-md text-white shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 ">
@@ -68,21 +92,16 @@ const Navbar = () => {
           <Image
             src="/lastcalltrips.png"
             alt="Last Call Trips Logo"
-            width={400}   
-            height={100}  
+            width={400}
+            height={100}
             className="w-32 object-contain"
             priority
           />
         </Link>
 
-
-        <ul className="hidden md:flex space-x-10 text-base   font-semibold">
-          {[
-            { href: "/story", label: "Our Story" },
-            { href: "/travelBlog", label: "Travel Blog" },
-            { href: "/support", label: "Support" },
-            { href: "/subscribe", label: "Subscribe" },
-          ].map((item) => (
+   
+        <ul className="hidden md:flex space-x-10 text-base font-semibold">
+          {navItems.map((item) => ( 
             <li key={item.href}>
               <Link
                 href={item.href}
@@ -134,7 +153,19 @@ const Navbar = () => {
                     <p className="text-xs text-gray-500 truncate">
                       {user.email}
                     </p>
+                
+                    <span className={`mt-1 inline-block px-2 py-0.5 text-xs font-semibold rounded-full ${user.isSubscribed ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                        {user.isSubscribed ? ' Member' : ' User'}
+                    </span>
                   </div>
+               
+                  {user.isSubscribed && (
+                    <Link href="/profile" onClick={() => setDropdownOpen(false)} className="flex items-center w-full px-4 py-3 text-left text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-200 group">
+                        <FiUser className="mr-3 text-lg group-hover:text-indigo-600" />
+                        <span className="font-medium">My Profile</span>
+                    </Link>
+                  )}
+
                   <button
                     onClick={handleLogout}
                     className="flex items-center w-full px-4 py-3 text-left text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 group"
@@ -160,12 +191,7 @@ const Navbar = () => {
         <div className="md:hidden bg-gray-800 border-t border-gray-700 animate-slideDown">
           <div className="px-6 py-5 space-y-5">
             <ul className="flex flex-col space-y-4 text-base font-semibold">
-              {[
-                { href: "/story", label: "Our Story" },
-                { href: "/travelBlog", label: "Travel Blog" },
-                { href: "/support", label: "Support" },
-                { href: "/subscribe", label: "Subscribe" },
-              ].map((item) => (
+              {navItems.map((item) => ( 
                 <li key={item.href}>
                   <Link
                     href={item.href}

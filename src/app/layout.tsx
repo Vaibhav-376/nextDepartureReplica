@@ -46,7 +46,7 @@ export default function RootLayout({
         <Providers>
           <AuthProvider>
             <Navbar />
-            <main className="pt-28">{children}</main>
+            <main className="pt-28 min-h-screen">{children}</main>
             <Footer />
           </AuthProvider>
 

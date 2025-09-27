@@ -175,15 +175,15 @@ export default function SuccessPage() {
         )}
 
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href = "/"><button
+          <Link href = "/profile"><button
             className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
           >
             Go to Dashboard
           </button></Link>
-          <Link href={"/"}><button
+          <Link href={"/deals"}><button
             className="px-6 py-3 bg-gray-600 text-white font-medium rounded-md hover:bg-gray-700 transition-colors"
           >
-            Back to Home
+            Deals
           </button></Link>
         </div>
       </div>

@@ -1,3 +1,4 @@
+// /api/auth/me/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import prisma from "../../../../../prisma/client";
@@ -18,11 +19,11 @@ export async function GET(req: NextRequest) {
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
-      select: { 
-        id: true, 
-        name: true, 
-        email: true, 
-        isAdmin: true
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        isAdmin: true,
       },
     });
 
@@ -30,9 +31,27 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ user: null }, { status: 401 });
     }
 
-    return NextResponse.json({ user });
+    const activeSub = await prisma.subscription.findFirst({
+      where: {
+        userId: user.id,
+        status: { in: ["ACTIVE", "TRIALING"] },
+        stripeCurrentPeriodEnd: { gte: new Date() },
+      },
+    });
+
+    const isSubscribed = !!activeSub;
+
+  
+    return NextResponse.json({ 
+        user: { 
+            ...user, 
+            isSubscribed 
+        } 
+    });
   } catch (err) {
     console.error("Auth verification error:", err);
-    return NextResponse.json({ user: null }, { status: 401 });
+    const response = NextResponse.json({ user: null }, { status: 401 });
+    response.cookies.delete("token");
+    return response;
   }
 }
