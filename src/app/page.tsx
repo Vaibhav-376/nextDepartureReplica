@@ -9,18 +9,18 @@ import { redirect, useRouter } from "next/navigation";
 export default function Home() {
   const howWeWorkSteps = [
     { id: 1, title: "Join", desc: "Join over 200,000 subscribers and save on average $400 per flight! We find deals to all sorts of destinations from Canada.", image: "/join.png" },
-    { id: 2, title: "Discover", desc: "The team at Next Departure are the experts at uncovering insane cheap flights, unadvertised sales and mistake fares!", image: "/discover.png" },
+    { id: 2, title: "Discover", desc: "The team at Last Call Trips are the experts at uncovering insane cheap flights, unadvertised sales and mistake fares!", image: "/discover.png" },
     { id: 3, title: "Travel", desc: "Customize your deal alerts and get instant notifications to score the deal of a lifetime!", image: "/travel.png" },
   ]
 
   const reviews = [
-    { id: 1, name: "Sukan thapa", date: "2024-03-22", desc: "Next Departure is a game-changer for budget travelers like me. Their alerts have helped me snag incredible flight deals that I wouldn't have found otherwise. Highly recommend!", image: "/user.png" },
-    { id: 2, name: "Jane Doe", date: "2024-02-15", desc: "I can't believe the savings I've made since subscribing to Next Departure. Their team is always on top of the latest deals, and I've booked trips to Europe and Asia for a fraction of the cost!", image: "/user.png" },
-    { id: 3, name: "John Smith", date: "2024-01-10", desc: "As a frequent traveler, Next Departure has become my go-to resource for finding cheap flights. Their alerts are timely and accurate, and I've saved hundreds of dollars on my trips.", image: "/user.png" },
+    { id: 1, name: "Sukan thapa", date: "2024-03-22", desc: "Last Call Trips is a game-changer for budget travelers like me. Their alerts have helped me snag incredible flight deals that I wouldn't have found otherwise. Highly recommend!", image: "/user.png" },
+    { id: 2, name: "Jane Doe", date: "2024-02-15", desc: "I can't believe the savings I've made since subscribing to Last Call Trips. Their team is always on top of the latest deals, and I've booked trips to Europe and Asia for a fraction of the cost!", image: "/user.png" },
+    { id: 3, name: "John Smith", date: "2024-01-10", desc: "As a frequent traveler, Last Call Trips has become my go-to resource for finding cheap flights. Their alerts are timely and accurate, and I've saved hundreds of dollars on my trips.", image: "/user.png" },
   ]
 
   const faqs = [
-    { question: "How does this work?", ans: "Next Departure is a freemium service that finds you incredibly cheap flight deals. We scour the web to uncover hidden deals, unadvertised sales and mistake fares that saves you at least 40% from average prices.We then send out instant push notifications and email alerts so you can be the first to know and score the deal of a lifetime! We’ll also provide you with complete details about the deal including availability and booking instructions.You’ll never have to pay full price for a flight again!" },
+    { question: "How does this work?", ans: "Last Call Trips is a freemium service that finds you incredibly cheap flight deals. We scour the web to uncover hidden deals, unadvertised sales and mistake fares that saves you at least 40% from average prices.We then send out instant push notifications and email alerts so you can be the first to know and score the deal of a lifetime! We’ll also provide you with complete details about the deal including availability and booking instructions.You’ll never have to pay full price for a flight again!" },
 
     { question: "Is your mobile app free to download?", ans: "Yes! Our mobile app is completely free to download and use. We offer both a free version and a premium subscription with additional features." },
     { question: "How do I book a flight deal?", ans: "Once you receive a flight deal alert, simply follow the booking instructions provided in the alert. This usually involves clicking on a link that takes you to the airline or travel agency's website where you can complete your booking." },
@@ -95,7 +95,7 @@ export default function Home() {
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-center h-full px-6 text-center md:text-left">
           <div className="relative w-[220px] h-[440px] sm:w-[260px] sm:h-[520px] md:w-[280px] md:h-[560px] mb-8 md:mb-0">
             <Image
-              src="/mobilephone.png"
+              src="/mobilePhoneMain.png"
               alt="Phone Mockup"
               fill
               className="object-contain"

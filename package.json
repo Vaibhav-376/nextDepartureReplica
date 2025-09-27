@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "NODE_ENV=production node server.js",
+    "build": "next build ",
+    "start": "node server.js",
     "lint": "eslint",
     "postinstall": "prisma generate"
   },

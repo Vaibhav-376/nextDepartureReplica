@@ -3,16 +3,22 @@
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { FiMenu, FiX, FiUser, FiLogOut, FiChevronDown } from "react-icons/fi";
-import { useAuth } from "../lib/AuthContext"; 
+import {
+  FiMenu,
+  FiX,
+  FiUser,
+  FiLogOut,
+  FiChevronDown,
+} from "react-icons/fi";
+import { useAuth } from "../lib/AuthContext";
+import Image from "next/image";
 
 const Navbar = () => {
-  // const [user, setUser] = useState(null);
-    const { user, setUser } = useAuth();
+  const { user, setUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef (null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -27,18 +33,20 @@ const Navbar = () => {
       }
     };
     fetchUser();
-  }, []);
+  }, [setUser]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
         setDropdownOpen(false);
       }
     };
-
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -54,61 +62,51 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full z-50 bg-gray-800 text-white shadow-lg relative">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        <Link href="/">
-          <div className="text-xl font-bold tracking-wide cursor-pointer hover:text-blue-400 transition-colors duration-200">
-            Logo
-          </div>
+    <nav className="fixed top-0 left-0 w-full z-50 bg-gray-900/70 backdrop-blur-md text-white shadow-lg">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 ">
+        <Link href="/" className="flex items-center space-x-2">
+          <Image
+            src="/lastcalltrips.png"
+            alt="Last Call Trips Logo"
+            width={400}   
+            height={100}  
+            className="w-32 object-contain"
+            priority
+          />
         </Link>
 
-        <ul className="hidden md:flex space-x-8 text-sm font-medium">
-          <li>
-            <Link
-              href="/story"
-              className="hover:text-blue-400 transition-colors duration-200 py-2"
-            >
-              Our Story
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/travelBlog"
-              className="hover:text-blue-400 transition-colors duration-200 py-2"
-            >
-              Travel Blog
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/support"
-              className="hover:text-blue-400 transition-colors duration-200 py-2"
-            >
-              Support
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/subscribe"
-              className="hover:text-blue-400 transition-colors duration-200 py-2"
-            >
-              Subscribe
-            </Link>
-          </li>
+
+        <ul className="hidden md:flex space-x-10 text-base   font-semibold">
+          {[
+            { href: "/story", label: "Our Story" },
+            { href: "/travelBlog", label: "Travel Blog" },
+            { href: "/support", label: "Support" },
+            { href: "/subscribe", label: "Subscribe" },
+          ].map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className="relative py-2 transition-colors duration-200 hover:text-indigo-400 group"
+              >
+                {item.label}
+                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            </li>
+          ))}
         </ul>
 
-        <div className="hidden md:flex space-x-4 items-center">
+        <div className="hidden md:flex space-x-5 items-center">
           {!user ? (
             <>
               <Link
                 href="/auth/login"
-                className="px-5 py-2.5 rounded-lg bg-gray-700 hover:bg-gray-600 transition-all duration-200 font-medium border border-gray-600 hover:border-gray-500"
+                className="px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-all duration-200 font-medium border border-gray-600 hover:border-gray-500 text-base"
               >
                 Login
               </Link>
               <Link
                 href="/auth/signup"
-                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 font-medium shadow-md hover:shadow-lg"
+                className="px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 font-medium shadow-md hover:shadow-lg text-base"
               >
                 Sign Up
               </Link>
@@ -117,18 +115,18 @@ const Navbar = () => {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center space-x-2 px-4 py-2.5 rounded-lg bg-gray-700 hover:bg-gray-600 transition-all duration-200 font-medium border border-gray-600 hover:border-gray-500 min-w-[120px]"
+                className="flex items-center space-x-2 px-5 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-all duration-200 font-medium border border-gray-600 hover:border-gray-500 min-w-[160px] text-base"
               >
                 <FiUser className="text-lg" />
                 <span className="truncate max-w-[100px]">{user.name}</span>
                 <FiChevronDown
-                  className={`text-sm transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''
+                  className={`text-sm transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""
                     }`}
                 />
               </button>
 
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50 animate-fadeIn">
                   <div className="px-4 py-2 border-b border-gray-100">
                     <p className="text-sm font-medium text-gray-900 truncate">
                       {user.name}
@@ -137,7 +135,6 @@ const Navbar = () => {
                       {user.email}
                     </p>
                   </div>
-
                   <button
                     onClick={handleLogout}
                     className="flex items-center w-full px-4 py-3 text-left text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 group"
@@ -153,67 +150,47 @@ const Navbar = () => {
 
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-2xl focus:outline-none p-1 hover:bg-gray-700 rounded transition-colors duration-200"
+          className="md:hidden text-3xl focus:outline-none p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200"
         >
           {menuOpen ? <FiX /> : <FiMenu />}
         </button>
       </div>
 
       {menuOpen && (
-        <div className="md:hidden bg-gray-700 border-t border-gray-600">
-          <div className="px-6 py-4 space-y-4">
-            <ul className="flex flex-col space-y-3 text-sm font-medium">
-              <li>
-                <Link
-                  href="/story"
-                  onClick={() => setMenuOpen(false)}
-                  className="block py-2 hover:text-blue-400 transition-colors duration-200"
-                >
-                  Our Story
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/travelBlog"
-                  onClick={() => setMenuOpen(false)}
-                  className="block py-2 hover:text-blue-400 transition-colors duration-200"
-                >
-                  Travel Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/support"
-                  onClick={() => setMenuOpen(false)}
-                  className="block py-2 hover:text-blue-400 transition-colors duration-200"
-                >
-                  Support
-                </Link>
-              </li>
-                            <li>
-                <Link
-                  href="/subscribe"
-                  onClick={() => setMenuOpen(false)}
-                  className="block py-2 hover:text-blue-400 transition-colors duration-200"
-                >
-                  Subscribe
-                </Link>
-              </li>
+        <div className="md:hidden bg-gray-800 border-t border-gray-700 animate-slideDown">
+          <div className="px-6 py-5 space-y-5">
+            <ul className="flex flex-col space-y-4 text-base font-semibold">
+              {[
+                { href: "/story", label: "Our Story" },
+                { href: "/travelBlog", label: "Travel Blog" },
+                { href: "/support", label: "Support" },
+                { href: "/subscribe", label: "Subscribe" },
+              ].map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="block py-2 hover:text-indigo-400 transition-colors duration-200"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
 
-            <div className="border-t border-gray-600 pt-4">
+            <div className="border-t border-gray-700 pt-4">
               {!user ? (
                 <div className="flex flex-col space-y-3">
                   <Link
                     href="/auth/login"
-                    className="px-4 py-3 rounded-lg bg-gray-600 hover:bg-gray-500 transition-all duration-200 text-center font-medium"
+                    className="px-4 py-3 rounded-lg bg-gray-600 hover:bg-gray-500 transition-all duration-200 text-center font-medium text-base"
                     onClick={() => setMenuOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
                     href="/auth/signup"
-                    className="px-4 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 text-center font-medium shadow-md"
+                    className="px-4 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 text-center font-medium shadow-md text-base"
                     onClick={() => setMenuOpen(false)}
                   >
                     Sign Up
@@ -221,8 +198,8 @@ const Navbar = () => {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  <div className="px-4 py-3 bg-gray-600 rounded-lg">
-                    <p className="font-medium text-white truncate">
+                  <div className="px-4 py-3 bg-gray-700 rounded-lg">
+                    <p className="font-medium text-white truncate text-base">
                       Welcome, {user.name}
                     </p>
                     <p className="text-xs text-gray-300 truncate">
@@ -234,7 +211,7 @@ const Navbar = () => {
                       handleLogout();
                       setMenuOpen(false);
                     }}
-                    className="flex items-center justify-center w-full px-4 py-3 rounded-lg bg-red-600 hover:bg-red-500 transition-all duration-200 font-medium shadow-md group"
+                    className="flex items-center justify-center w-full px-4 py-3 rounded-lg bg-red-600 hover:bg-red-500 transition-all duration-200 font-medium shadow-md group text-base"
                   >
                     <FiLogOut className="mr-2 text-lg group-hover:rotate-12 transition-transform duration-200" />
                     Logout

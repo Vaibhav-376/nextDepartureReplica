@@ -38,14 +38,14 @@ const Support = () => {
     ]
 
     const technical = [
-        { id: 1, question: "How do I download the app?", ans: "Search for “Next Departure” on your Google Play or App Store." },
+        { id: 1, question: "How do I download the app?", ans: "Search for “Last Call Trips” on your Google Play or App Store." },
         { id: 2, question: "Where is the Facebook login?", ans: "Effective September 13, 2023, we will be discontinuing the option to log in using Facebook social login on our platform. To access your account, you will need to reset your password and log in using your email address associated with your account.How to Transition:Reset Your Password: If you have previously used Facebook to log in, you will need to reset your password. To do this, visit ourwebsite or open our mobile app and click on the “Forgot Password” link. You will receive an email with instructions on how tocreate a new password. Alternatively, you can reset your password at this link.Login with Email: Once your password is reset, you can use your email address and new password to log in securely.If you encounter any issues during this change, please don’t hesitate to reach out to us at support@nextdeparture.ca forassistance." },
 
         { id: 3, question: "Why am I not receiving email notifications?", ans: "Make sure you double check the following:Make sure you have turned email notifications on. You can do this directly on the app under Deal Alerts, or you can check off “Email Notifications” here after (after you log on)Are you deal alerts set? If yes, are they set to the departure and destination correctly?Are you subscribed?If it’s still not working, please contact us at support@nextdeparture.ca" },
 
-        { id: 4, question: "Why am I not receiving push notifications?", ans: "Make sure you double check the following:Make sure your device’s push notifications are turned on. For iOS devices, they ask you to allow notifications when you first installed our app. For iOS/Apple devices, go to your Settings > Notifications > Next Departure > Make sure “Allow Notifications” toggle is on Are you deal alerts set? If yes, are they set to the departure and destination correctly?Are you subscribed? If it’s still not working, please contact us at support@nextdeparture.ca Update: January 2023, for iOS users not receiving push notifications, please update your device to iOS 16.2 or higher." },
+        { id: 4, question: "Why am I not receiving push notifications?", ans: "Make sure you double check the following:Make sure your device’s push notifications are turned on. For iOS devices, they ask you to allow notifications when you first installed our app. For iOS/Apple devices, go to your Settings > Notifications > Last Call Trips > Make sure “Allow Notifications” toggle is on Are you deal alerts set? If yes, are they set to the departure and destination correctly?Are you subscribed? If it’s still not working, please contact us at support@nextdeparture.ca Update: January 2023, for iOS users not receiving push notifications, please update your device to iOS 16.2 or higher." },
 
-        { id: 5, question: "Why is my subscription not active?", ans: "If your subscription is active with iOS subscriptions, it may disconnect with the Next Departure app. It can be fixed by going on to the Subscription page of the Next Departure app, and hitting “Restore Purchases“." },
+        { id: 5, question: "Why is my subscription not active?", ans: "If your subscription is active with iOS subscriptions, it may disconnect with the Last Call Trips app. It can be fixed by going on to the Subscription page of the Last Call Trips app, and hitting “Restore Purchases“." },
     ]
 
     const stillquestion = [
@@ -298,7 +298,7 @@ const Support = () => {
                                         checked={formData.howSubscribe === "stripe"}
                                         onChange={handleChange}
                                     />
-                                    Next Departure Website Stripe
+                                    Last Call Trips Website Stripe
                                 </label>
                                 <label className="flex items-center gap-2">
                                     <input

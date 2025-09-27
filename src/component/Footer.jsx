@@ -1,24 +1,47 @@
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#1e2939] mt-auto text-white">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="text-lg font-bold tracking-wide">
-          Company name
+    <footer className="bg-[#545a65] text-white">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+
+
+        <div className="flex items-center space-x-3">
+          <Image
+            src="/lastcalltrips.png"
+            alt="Company Logo"
+            width={160}
+            height={50}
+            className="h-36 w-auto object-contain"
+          />
         </div>
 
         <nav>
-          <ul className="flex flex-wrap gap-6 text-sm font-medium">
-            <li className="hover:text-gray-700 cursor-pointer transition">About</li>
-            <li className="hover:text-gray-700 cursor-pointer transition">Blog</li>
-            <li className="hover:text-gray-700 cursor-pointer transition">Press</li>
-            <li className="hover:text-gray-700 cursor-pointer transition">Help</li>
+          <ul className="flex flex-wrap gap-8 text-sm font-medium">
+            {[
+              { label: "About", href: "/about" },
+              { label: "Blog", href: "/travelBlog" },
+              { label: "Help", href: "/support" },
+              { label: "Disclaimer", href: "/disclaimer" },
+              { label: "Privacy and Policy", href: "/privacy-and-policy" },
+            ].map((item) => (
+              <li key={item.label}>
+                <Link
+                  href={item.href}
+                  className="relative group transition"
+                >
+                  {item.label}
+                  <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
 
         <div className="text-xs text-white text-center md:text-right">
-          © {new Date().getFullYear()} All rights reserved | Mistake Air Fares
+          © {new Date().getFullYear()} All rights reserved | Last Call Trips
         </div>
       </div>
     </footer>
