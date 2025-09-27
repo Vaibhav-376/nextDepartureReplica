@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       process.env.STRIPE_SECRET_KEY?.startsWith("sk_live_") ? "LIVE" : "TEST"
     );
 
-    // Check for active subscription
+
     const activeSub = await prisma.subscription.findFirst({
       where: {
         userId: id,
@@ -34,7 +34,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "You already have an active subscription." }, { status: 400 });
     }
 
-    // Handle customer
     let customerId = user.stripeCustomerId;
     if (customerId) {
       try {
@@ -60,15 +59,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid subscription plan" }, { status: 400 });
     }
 
-    // ✅ Use NEXT_PUBLIC_APP_URL or fallback for dev
     let appUrl = process.env.NEXT_PUBLIC_APP_URL;
     if (!appUrl || !/^https?:\/\//.test(appUrl)) {
       console.warn("⚠️ Invalid or missing NEXT_PUBLIC_APP_URL. Falling back to http://localhost:3000");
       appUrl = "http://localhost:3000";
     }
-    appUrl = appUrl.replace(/\/$/, ""); // remove trailing slash
+    appUrl = appUrl.replace(/\/$/, ""); 
 
-    // Create checkout session
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
