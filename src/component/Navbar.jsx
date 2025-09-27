@@ -84,7 +84,6 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gray-900/70 backdrop-blur-md text-white shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6">
-        {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
           <Image
             src="/lastcalltrips.png"
@@ -96,7 +95,7 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Desktop Nav */}
+
         <ul className="hidden md:flex space-x-10 text-base font-semibold">
           {navItems.map((item) => ( 
             <li key={item.href}>
@@ -111,9 +110,9 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Desktop Right Section */}
+
         <div className="hidden md:flex items-center space-x-6">
-          {/* Toll Free Number */}
+
           <a
             href="tel:+18337471983"
             className="flex items-center space-x-2 text-white hover:text-indigo-300 font-semibold"
@@ -122,7 +121,7 @@ const Navbar = () => {
             <span>+1 (833) 747-1983</span>
           </a>
 
-          {/* Auth Buttons / Dropdown */}
+     
           {!user ? (
             <>
               <Link
@@ -140,7 +139,7 @@ const Navbar = () => {
             </>
           ) : (
             <div className="relative" ref={dropdownRef}>
-              {/* Dropdown Button */}
+           
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center space-x-2 px-5 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-all duration-200 font-medium border border-gray-600 hover:border-gray-500 min-w-[160px] text-base"
@@ -152,7 +151,6 @@ const Navbar = () => {
                 />
               </button>
 
-              {/* Dropdown Menu */}
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50 animate-fadeIn">
                   <div className="px-4 py-2 border-b border-gray-100">
@@ -191,7 +189,6 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile Toggle */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden text-3xl focus:outline-none p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200"
@@ -200,7 +197,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-gray-800 border-t border-gray-700 animate-slideDown">
           <div className="px-6 py-5 space-y-5">
@@ -218,7 +214,6 @@ const Navbar = () => {
               ))}
             </ul>
 
-            {/* Toll Free Number in Mobile */}
             <div className="border-t border-gray-700 pt-4">
               <a
                 href="tel:+18337471983"
@@ -229,7 +224,6 @@ const Navbar = () => {
               </a>
             </div>
 
-            {/* Auth Section */}
             <div className="border-t border-gray-700 pt-4">
               {!user ? (
                 <div className="flex flex-col space-y-3">
